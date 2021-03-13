@@ -18,39 +18,26 @@ function serveStaticFile(res, path, contentType, responseCode) {
     })
 }
 
-function css(req, res) {
+
+http.createServer(function css(req, res) {
     if (req.url == '/style.css') {
       response.writeHead(200, {'Content-type' : 'text/css'});
-      var fileContents = fs.readFileSync('./style.css','utf8');
-      res.write(fileContents);
+      const css = fs.readFileSync('./style.css','utf8');
+      res.end(css);
     }
-  }  
-
-//http.createServer(function (req, res) {
-//    var path = req.url.replace(/\/?(?:\?.*)?$/ ,"").toLowerCase()
-//    switch (path) {
-//        case "/style.css" :
-//            response.writeHead(200, {"Content-Type": "text/css"});
-//            response.write(cssFile);
-//            break;
-//        default :    
-//            response.writeHead(200, {"Content-Type": "text/html"});
-//            response.write(htmlFile);
-//           break;
-//   }
-//})
+    else{
+        const html = fs.readFileSync('/index.html', 'utf8')
+        res.end(html);
+    }
+  })
 
 
-//http.createServer(function (request, responce) {
-//    if (request.url == '/style.css'){
-//    const css = fs.readFileSync('/style.css', 'utf8');
-//    responce.end(css)
-//  }else {
-//      const html = fs.readFileSync('/index.html', 'utf8')
-//      responce.end(html);
-//    }  
-//  });
-
+//  http.createServer(function(req,res){
+//  if(req.url == '/style.css'){
+//        return serveStaticFile(res, req.url, 'text/css');
+//    }
+//    })
+    
 
 http.createServer(function(req,res){
     var path = req.url.replace(/\/?(?:\?.*)?$/ ,"").toLowerCase()
